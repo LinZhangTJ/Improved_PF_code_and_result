@@ -1,0 +1,43 @@
+Main Fuction：
+run_main: The main function.
+least_square: The results as the initials of Kalman filtering.
+Kalman_forward: The forward Klman filtering (FKF).
+Kalman_backward: The backward Klman filtering (BKF).
+denoise_d: Filtering deternimistic parameters.
+denoise_r: Filtering irregular parameters.
+
+Sub-Fuction：
+get_scaleM: Getting Scale matrix.
+v_gc2mc: Converting geoid coefficients (gc) to mass coefficients (mc).
+vector2cs: Re-oreder SHCs from vector {S22,S21,C20,C21,C22;S33,S32,S31,C30,C31,C32,C33...} to matrix |C\S|.
+cs2grid: Transforming SHCs to grids.
+grid2cs_coefficient: Deriving the thansformation matrix from the spatial domain to the frequency domain.
+func_pnm: Obtaining nomalized Plm.
+func_weight_area: Deriving weight of grid on the sphere
+
+Input Data:
+F_lm and HanWahrLoveNumbers: Used for the transformations of geoid coefficients (gc) to mass coefficients (mc).
+time: Months in year (2002.04-2016.12).
+yy: Observation values involving SHCs from Tongji-Grace 2018 model ordered in {S22,S21,C20,C21,C22;S33,S32,S31,C30,C31,C32,C33...}. The C20 has been replaced with TN14, the mean field of 2004-2009 has been removed.
+Degree_one: The degree-one (from TN14; has been removed the mean filed) is used to be aded back to reconstructed mass SHCs).
+
+Output data:
+xd_filter: The final estimated deterministic parameters (with parameters denosing).
+xr_filter: The final estimated irregular parameters (with parameters denosing).
+grid_filter: The spatial mass changes (cm) include the effects of deterministic and irregular components,i.e.,
+%%%
+for i=1:n
+% Observation matrix
+A0=[1*IM (tt(i)-t0)*IM ((tt(i)-t0).^2)*IM cos(2*pi*(tt(i)-t0))*IM sin(2*pi*(tt(i)-t0))*IM cos(4*pi*(tt(i)-t0))*IM sin(4*pi*(tt(i)-t0))*IM];
+% Reconstrction
+y_new=A0*xd_filter+xr_filter(:,i); 
+% The maximum degree is 60
+cs=vector2cs(y_new,60); 
+grid_filter(:,:,i)=cs2grid(cs);
+end
+%%%
+grid_filter_removeGIA: The spatial mass changes (cm) (remove GIA effect (ICE-6G-C) from grid_filter).
+
+Notice:
+Due to the memory limitation of MATLAB software, in these codes, we divided the covariance matrices of observations from the Tongji-Grace2018 model during 2002-2016 into five parts: EE1 (2002.02-2004.12); EE2 (2005.01-2007.06); EE3 (2007.07-2009.12); EE4 (2010.01-2012.09); EE5 (2012.10-2016.12).
+However, the size of the covariance matrices used in this paper (Tongji-Grace2018) is extremely large, rendering it impractical to provide them directly. If anyone is interested, please don’t hesitate to contact us at 2011480@tongji.edu.cn.
