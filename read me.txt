@@ -13,7 +13,8 @@ vector2cs: Re-oreder SHCs from vector {S22,S21,C20,C21,C22;S33,S32,S31,C30,C31,C
 cs2grid: Transforming SHCs to grids.
 grid2cs_coefficient: Deriving the thansformation matrix from the spatial domain to the frequency domain.
 func_pnm: Obtaining nomalized Plm.
-func_weight_area: Deriving weight of grid on the sphere
+func_weight_area: Deriving weight of grid on the sphere.
+MMSE_Tikhonov: Determing the optimal adjust factor.
 
 Input Data:
 F_lm and HanWahrLoveNumbers: Used for the transformations of geoid coefficients (gc) to mass coefficients (mc).
