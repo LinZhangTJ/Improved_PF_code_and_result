@@ -4,7 +4,7 @@ function xr_filter=denoise_r(xr,Pr,Ymn1,lamda)
 % xr: unfiltered irregular parameters
 % Pr: the covariance matrix of xr
 % Ymn1: the matrix of transformation from grid to SHC. Grid is 180*360 [89.5:-89.5 0.5:359.5]
-% lamda: balance factor for the covariance matrices of signals and noise
+% lamda: Initial balance factor for the covariance matrices of signals and noise
 
 % Output data:
 % xr_filter: filtered irregular parameter
@@ -52,5 +52,12 @@ Qs=Qs0*Qs0';
 % Iteration differences
 ee(num)=(abs(mean(gm(:,1))-mean(gm0)))/(mean(gm(:,1)))
 end
-xr_filter=zz;
+
+%Adjustment factor
+for i=1:n
+[x_Tik,alpha]=MMSE_Tikhonov_1(10.^(-14),eye(M),xr(:,i),inv(diag(Pr(:,ii))),inv(Qs),zz(:,i));
+xx(:,i)=x_Tik;
+end
+
+xr_filter=xx;
 end
