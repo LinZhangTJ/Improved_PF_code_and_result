@@ -55,7 +55,7 @@ end
 % Removing degree 0 and 1
 Ymn1=Ymn(4:end,:);
 
-lamda=10.^(-18); %Balance factor
+lamda=10.^(-18); % Initial Balance factor, the optimal balance factor will be determined on minimum MSE criterion.
 % Denoising deterministic parameters
 xd_filter=denoise_d(xd,Pd,Ymn1,lamda);
 % Denoising irregular parameters
