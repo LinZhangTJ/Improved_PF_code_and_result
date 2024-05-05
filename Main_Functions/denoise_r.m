@@ -53,9 +53,9 @@ Qs=Qs0*Qs0';
 ee(num)=(abs(mean(gm(:,1))-mean(gm0)))/(mean(gm(:,1)))
 end
 
-%Adjustment factor
+%Adjustment factor based on minimum MSE criterion
 for i=1:n
-[x_Tik,alpha]=MMSE_Tikhonov_1(10.^(-14),eye(M),xr(:,i),inv(diag(Pr(:,ii))),inv(Qs),zz(:,i));
+[x_Tik,alpha]=MMSE_Tikhonov(10.^(-14),eye(M),xr(:,i),inv(diag(Pr(:,ii))),inv(Qs),zz(:,i));
 xx(:,i)=x_Tik;
 end
 
